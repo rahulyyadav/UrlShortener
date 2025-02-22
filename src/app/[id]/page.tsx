@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 
-interface Params {
+export default async function RedirectPage({
+  params,
+}: {
   params: { id: string };
-}
-
-export default async function RedirectPage({ params }: Params) {
+}) {
   const { id } = params;
 
   try {
