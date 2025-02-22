@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# URL Shortener
+
+A **URL Shortener** web application built with **Next.js**, **AWS Lambda**, **API Gateway**, and **DynamoDB**. This project allows users to shorten URLs, track analytics, and optionally set expiration times for generated short links.
+
+## Features
+
+- Shorten long URLs to a compact format.
+- Custom domain support (e.g., `ra.ly/{shortCode}`).
+- Automatic redirect handling.
+- Expiration-based short links (default: 5 hours for free users).
+- Basic analytics (number of visits, timestamps, etc.).
+
+## Tech Stack
+
+- **Frontend**: Next.js (React, Tailwind CSS)
+- **Backend**: AWS Lambda (Node.js)
+- **Database**: DynamoDB
+- **API Gateway**: Manages API endpoints
+- **Infrastructure**: AWS Route 53 (for custom domain), AWS S3 (for static assets, if needed)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Ensure you have the following installed:
+
+- Node.js (`>=18.x`)
+- npm / yarn / pnpm / bun
+- AWS CLI (configured with access credentials)
+- Git
+
+### Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/rahulyyadav/UrlShortener.git
+   cd UrlShortener
+   ```
+2. Install dependencies:
+   ```sh
+   npm install  # or yarn install / pnpm install / bun install
+   ```
+3. Start the development server:
+   ```sh
+   npm run dev  # or yarn dev / pnpm dev / bun dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+UrlShortener/
+│── public/                # Static assets
+│── src/
+│   ├── app/               # Next.js App Router structure
+│   │   ├── page.tsx       # Home page
+│   │   ├── api/
+│   │   │   ├── shorten.ts # API endpoint for URL shortening
+│   │   │   ├── redirect.ts# API endpoint for redirect handling
+│   ├── components/        # Reusable UI components
+│   ├── styles/            # Tailwind and global styles
+│── .env                   # Environment variables
+│── next.config.js         # Next.js configuration
+│── README.md              # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Backend (AWS Lambda + DynamoDB)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **URL Shortening**: A Lambda function stores the long URL in DynamoDB and returns a short code.
+2. **Redirection**: Another Lambda function fetches the long URL from DynamoDB when a user visits a short URL.
+3. **Expiration Handling**: Expired URLs are automatically removed using DynamoDB TTL settings.
+4. **Analytics**: Tracks the number of visits per short URL.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
+### Frontend (Vercel Deployment)
 
-To learn more about Next.js, take a look at the following resources:
+1. Install Vercel CLI:
+   ```sh
+   npm install -g vercel
+   ```
+2. Deploy to Vercel:
+   ```sh
+   vercel
+   ```
+3. Follow the on-screen instructions to configure your project.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend (AWS Lambda Deployment)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Deploy the Lambda function**:
+   ```sh
+   cd backend/
+   npm install
+   zip -r function.zip .
+   aws lambda update-function-code --function-name urlShortener --zip-file fileb://function.zip
+   ```
+2. **Update API Gateway** with the new Lambda function.
+3. **Set up a custom domain** in AWS Route 53 and link it to API Gateway.
 
-## Deploy on Vercel
+## Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create a `.env` file in the root directory:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+NEXT_PUBLIC_API_URL=https://your-api-gateway-url
+AWS_REGION=us-east-1
+DYNAMODB_TABLE_NAME=ShortURLs
+```
+
+## Future Improvements
+
+- Implement user authentication for managing URLs.
+- Add a dashboard to view analytics.
+- Support for custom short URLs.
+- Premium plans for extended link expiration.
+
+## Author
+
+**Rahul Yadav**
+
+## License
+
+This project is licensed under the MIT License.
