@@ -1,10 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  output: "export", // Ensure static export
-  trailingSlash: false, // Prevent Cloudflare from appending a trailing slash
-  images: {
-    unoptimized: true, // Cloudflare Pages does not support Next.js image optimization
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/:id",
+        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/:id`,
+        permanent: false,
+      },
+    ];
   },
 };
 
