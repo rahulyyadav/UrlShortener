@@ -45,7 +45,7 @@ export default function Home() {
       <div className="absolute top-4 left-6 flex items-center space-x-3">
         <h1 className="text-xl font-semibold relative cursor-pointer group">
           <span className="group-hover:after:w-full after:transition-all after:duration-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-black after:rounded-full">
-            'ra' URL Shortener
+            &#39;ra&#39; URL Shortener
           </span>
         </h1>
       </div>
@@ -77,6 +77,9 @@ export default function Home() {
           </div>
         )}
       </div>
+      <h6 className="fixed bottom-0 w-full text-center text-sm text-gray-500 py-2 bg-white">
+        © 2025 Rahul Yadav. All rights reserved.
+      </h6>
     </div>
   );
 }
