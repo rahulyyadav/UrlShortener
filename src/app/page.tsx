@@ -42,6 +42,7 @@ export default function Home() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <title>ra URL Shortener</title>
       <div className="absolute top-4 left-6 flex items-center space-x-3">
         <h1 className="text-xl font-semibold relative cursor-pointer group">
           <span className="group-hover:after:w-full after:transition-all after:duration-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-black after:rounded-full">
