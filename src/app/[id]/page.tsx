@@ -1,20 +1,18 @@
 import { redirect } from "next/navigation";
 
-export default async function RedirectPage({
-  params,
-}: {
+interface Params {
   params: { id: string };
-}) {
-  const shortCode = params.id;
+}
+
+export default async function RedirectPage({ params }: Params) {
+  const { id } = params;
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/${shortCode}`
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${id}`);
 
     if (res.ok) {
       const data = await res.json();
-      redirect(data.long_url); // Redirect to the original URL
+      redirect(data.long_url); // Server-side redirect to the original URL
     } else {
       return <h1>Short URL not found</h1>;
     }
